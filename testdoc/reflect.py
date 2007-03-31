@@ -1,5 +1,6 @@
 """Collection of reflection tools lifted from Twisted 2.5."""
 
+import imp
 import inspect
 import os
 import sys
@@ -87,7 +88,7 @@ def filenameToModule(fn):
     if not os.path.exists(fn):
         raise ValueError("%r doesn't exist" % (fn,))
     try:
-        ret = reflect.namedAny(reflect.filenameToModuleName(fn))
+        ret = namedAny(filenameToModuleName(fn))
     except (ValueError, AttributeError):
         # Couldn't find module.  The file 'fn' is not in PYTHONPATH
         return _importFromFile(fn)
