@@ -1,6 +1,6 @@
 import unittest
 
-from testdoc import find_tests
+from testdoc.finder import find_tests
 
 
 class MockFinder(object):
