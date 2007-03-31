@@ -106,10 +106,3 @@ class WikiFormatter(object):
 
     def paragraph(self, text):
         self.writeln('%s\n' % (text.strip(),))
-
-
-if __name__ == '__main__':
-    import sys
-    formatter = WikiFormatter(sys.stdout)
-    documenter = Documenter(formatter)
-    find_tests(documenter, reflect.namedAny(sys.argv[1]))

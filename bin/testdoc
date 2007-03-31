@@ -1,0 +1,27 @@
+#!/usr/bin/python
+
+import sys
+import testdoc
+from testdoc import reflect
+
+
+def usage():
+    return "Usage: testdoc <fully-qualified module name>"
+
+
+def main():
+    if len(sys.argv) != 2:
+        print usage()
+        sys.exit(2)
+    try:
+        module = reflect.namedAny(sys.argv[1])
+    except:
+        print usage()
+        raise
+    formatter = testdoc.WikiFormatter(sys.stdout)
+    documenter = testdoc.Documenter(formatter)
+    testdoc.find_tests(documenter, module)
+
+
+if __name__ == '__main__':
+    main()
