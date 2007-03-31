@@ -1,7 +1,6 @@
 import inspect
 import StringIO
-
-from twisted.trial import unittest
+import unittest
 
 from testdoc import split_name, find_tests, Documenter, WikiFormatter
 

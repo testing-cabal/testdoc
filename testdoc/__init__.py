@@ -1,7 +1,8 @@
 import inspect
 import re
 
-from twisted.trial.runner import TestLoader
+from testdoc import reflect
+
 
 def split_name(name):
     bits = name.split('_')
@@ -33,13 +34,12 @@ def get_lineno(obj):
 
 
 def find_tests(finder, module):
-    loader = TestLoader()
     finder.gotModule(module)
-    classes = sorted(loader.findTestClasses(module), key=get_lineno)
+    classes = sorted(reflect.findTestClasses(module), key=get_lineno)
     for testCaseClass in classes:
         finder.gotTestClass(testCaseClass)
         methods = [getattr(testCaseClass, 'test%s' % name)
-                   for name in loader.getTestCaseNames(testCaseClass)]
+                   for name in reflect.getTestCaseNames(testCaseClass)]
         for method in sorted(methods, key=get_lineno):
             finder.gotTest(method)
 
@@ -110,7 +110,6 @@ class WikiFormatter(object):
 
 if __name__ == '__main__':
     import sys
-    from twisted.python.reflect import namedAny
     formatter = WikiFormatter(sys.stdout)
     documenter = Documenter(formatter)
-    find_tests(documenter, namedAny(sys.argv[1]))
+    find_tests(documenter, reflect.namedAny(sys.argv[1]))
