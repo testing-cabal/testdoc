@@ -86,23 +86,3 @@ class Documenter(object):
         docs = self.getDocs(method)
         if docs is not None:
             self.formatter.paragraph(docs)
-
-
-class WikiFormatter(object):
-    def __init__(self, stream):
-        self.stream = stream
-
-    def writeln(self, line):
-        self.stream.write('%s\n' % (line,))
-
-    def title(self, name):
-        self.writeln('= %s =\n' % (name,))
-
-    def section(self, name):
-        self.writeln('== %s ==\n' % (name,))
-
-    def subsection(self, name):
-        self.writeln('=== %s ===\n' % (name,))
-
-    def paragraph(self, text):
-        self.writeln('%s\n' % (text.strip(),))

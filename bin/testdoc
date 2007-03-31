@@ -2,7 +2,7 @@
 
 import sys
 import testdoc
-from testdoc import reflect
+from testdoc import reflect, formatter
 
 
 def usage():
@@ -18,8 +18,8 @@ def main():
     except:
         print usage()
         raise
-    formatter = testdoc.WikiFormatter(sys.stdout)
-    documenter = testdoc.Documenter(formatter)
+    format = formatter.WikiFormatter(sys.stdout)
+    documenter = testdoc.Documenter(format)
     testdoc.find_tests(documenter, module)
 
 
