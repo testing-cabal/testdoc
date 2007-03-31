@@ -3,7 +3,7 @@ import unittest
 from testdoc.finder import find_tests
 
 
-class MockFinder(object):
+class MockCollector(object):
     def __init__(self):
         self.log = []
 
@@ -17,29 +17,33 @@ class MockFinder(object):
         self.log.append(('method', method))
 
 
-class TestFinder(unittest.TestCase):
+class TestPassiveFinder(unittest.TestCase):
+    """One approach to finding tests is to look inside a module for test
+    classes and then look inside those test classes for test methods. The
+    default finder uses this approach.
+    """
 
     def setUp(self):
-        self.finder = MockFinder()
+        self.collector = MockCollector()
 
     def test_empty(self):
         from testdoc.tests import empty
-        find_tests(self.finder, empty)
-        self.assertEqual(self.finder.log, [('module', empty)])
+        find_tests(self.collector, empty)
+        self.assertEqual(self.collector.log, [('module', empty)])
 
     def test_hasemptycase(self):
         from testdoc.tests import hasemptycase
-        find_tests(self.finder, hasemptycase)
+        find_tests(self.collector, hasemptycase)
         self.assertEqual(
-            self.finder.log, [
+            self.collector.log, [
                 ('module', hasemptycase),
                 ('class', hasemptycase.SomeTest)])
 
     def test_hastests(self):
         from testdoc.tests import hastests
-        find_tests(self.finder, hastests)
+        find_tests(self.collector, hastests)
         self.assertEqual(
-            self.finder.log, [
+            self.collector.log, [
                 ('module', hastests),
                 ('class', hastests.SomeTest),
                 ('method', hastests.SomeTest.test_foo_handles_qux),
