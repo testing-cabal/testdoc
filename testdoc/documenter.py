@@ -1,6 +1,6 @@
-import inspect
 import re
 
+from testdoc.reflect import extract_docs
 
 def split_name(name):
     bits = name.split('_')
@@ -46,15 +46,9 @@ class Documenter(object):
         self.formatter = formatter
 
     def _append_docs(self, obj):
-        docs = self.extract_docs(obj)
+        docs = extract_docs(obj)
         if docs is not None:
             self.formatter.paragraph(docs)
-
-    def extract_docs(self, obj):
-        doc = inspect.getdoc(obj)
-        if doc is None:
-            doc = inspect.getcomments(obj)
-        return doc
 
     def format_module(self, module_name):
         return module_name

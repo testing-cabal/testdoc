@@ -1,6 +1,7 @@
 import unittest
 
 from testdoc.documenter import Documenter, split_name, title_case
+from testdoc.reflect import extract_docs
 
 
 class TestSplitName(unittest.TestCase):
@@ -75,7 +76,7 @@ class TestDocumenter(unittest.TestCase):
             self.formatter.log,
             [('title',
               self.documenter.format_module('testdoc.tests.hastests')),
-             ('para', self.documenter.extract_docs(hastests))])
+             ('para', extract_docs(hastests))])
 
     def test_empty_case(self):
         from testdoc.tests import hastests
@@ -83,7 +84,7 @@ class TestDocumenter(unittest.TestCase):
         self.assertEqual(
             self.formatter.log,
             [('section', self.documenter.format_test_class('SomeTest')),
-             ('para', self.documenter.extract_docs(hastests.SomeTest))])
+             ('para', extract_docs(hastests.SomeTest))])
 
     def test_method(self):
         from testdoc.tests import hastests
@@ -92,8 +93,7 @@ class TestDocumenter(unittest.TestCase):
             self.formatter.log,
             [('subsection',
               self.documenter.format_test('test_foo_handles_qux')),
-             ('para', self.documenter.extract_docs(
-            hastests.SomeTest.test_foo_handles_qux))])
+             ('para', extract_docs(hastests.SomeTest.test_foo_handles_qux))])
 
     def test_title_case(self):
         self.assertEqual(

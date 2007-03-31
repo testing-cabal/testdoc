@@ -179,3 +179,39 @@ def addMethodNamesToDict(classObj, dict, prefix, baseClass=None):
                 and (len(optName))):
                 dict[optName] = 1
 
+
+def _strip_comments(comment):
+    if comment is None:
+        return None
+    return '\n'.join(line.strip('#').strip() for line in comment.splitlines())
+
+
+def extract_docs(obj):
+    doc = inspect.getdoc(obj)
+    if doc is None:
+        doc = _strip_comments(inspect.getcomments(obj))
+    if doc is None:
+        doc = _strip_comments(get_internal_comments(obj))
+    return doc
+
+
+def get_internal_comments(object):
+    lines, lnum = inspect.findsource(object)
+    if len(lines) <= lnum + 1:
+        # object is probably an emply module.
+        return None
+    indent = inspect.indentsize(lines[lnum+1])
+
+    comments = []
+    for line in lines[lnum + 1:]:
+        comment = line.strip()
+        # A line is a comment if it matches the indentation the first line and
+        # begins with a '#'
+        if inspect.indentsize(line) == indent and comment.startswith('#'):
+            comments.append(comment)
+        else:
+            break
+    if len(comments) == 0:
+        return None
+    else:
+        return '\n'.join(comments)
