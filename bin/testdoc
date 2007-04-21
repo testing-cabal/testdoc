@@ -3,7 +3,14 @@
 import inspect
 import os
 import sys
-import testdoc
+
+# This makes sure that users don't have to set up their environment specially
+# in order to run these programs from bin/.
+if os.path.abspath(sys.argv[0]).find(os.sep+'Testdoc') != -1:
+    sys.path.insert(0, os.path.normpath(os.path.join(os.path.abspath(sys.argv[0]), os.pardir, os.pardir)))
+if getattr(os, "getuid", 0) != 0:
+    sys.path.insert(0, os.curdir)
+
 from testdoc import documenter, finder, formatter, reflect
 
 
@@ -17,6 +24,7 @@ def string_to_module(argument):
     obj = reflect.namedAny(argument)
     if not inspect.ismodule(obj):
         raise ValueError('%r is not a Python module' % (argument,))
+    return obj
 
 
 def main():
