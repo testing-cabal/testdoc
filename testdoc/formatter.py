@@ -20,6 +20,7 @@ class WikiFormatter(object):
         self.writeln('= %s =\n' % (name,))
 
     def section(self, name):
+        self.writeln('')
         self.writeln('== %s ==\n' % (name,))
 
     def subsection(self, name):
