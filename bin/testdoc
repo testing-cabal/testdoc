@@ -42,6 +42,7 @@ def make_options():
 formats = {
     'moin': formatter.WikiFormatter,
     'rest': formatter.ReSTFormatter,
+    'trial': formatter.TrialLikeTreeFormatter,
     }
 
 

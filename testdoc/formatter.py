@@ -61,3 +61,43 @@ class ReSTFormatter(object):
 
     def paragraph(self, text):
         self.writeln('%s\n' % (text.strip(),))
+
+
+class TrialLikeTreeFormatter(object):
+
+    def __init__(self, stream):
+        self.stream = stream
+        from twisted.trial import reporter
+        for colorizer in [reporter._Win32Colorizer, reporter._AnsiColorizer,
+                reporter._NullColorizer]:
+            if colorizer.supported(stream):
+                self._colorizer = colorizer(stream)
+                break
+        self._last_indent = 0
+
+    def write(self, line, indent, colour):
+        if indent is None:
+            indent = self._last_indent + 2
+        else:
+            self._last_indent = indent
+        if colour is None:
+            self.stream.write(' ' * indent + line)
+        else:
+            self._colorizer.write(' ' * indent + line, colour)
+
+    def title(self, name):
+        self.write(name + '\n', 0, 'green')
+
+    def section(self, name):
+        self.write(name + '\n', 2, 'yellow')
+
+    def subsection(self, name):
+        self.write(name + '\n', 4, 'white')
+
+    def paragraph(self, text):
+        for line in text.strip().splitlines(True):
+            self.write(line, None, None)
+        if not line.endswith('\n'):
+            self.write('\n', None, None)
+
+
