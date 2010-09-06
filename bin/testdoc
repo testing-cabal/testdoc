@@ -27,18 +27,30 @@ def string_to_module(argument):
     return obj
 
 
+def make_options():
+    from optparse import OptionParser
+    parser = OptionParser(
+        usage="usage: %prog [options] <fully-qualified module name>")
+    format_choices = sorted(formats.keys())
+    parser.add_option("-f", "--format", dest="format",
+        choices=format_choices, metavar="FORMAT",
+        help="Format to emit.  One of: " + ', '.join(format_choices),
+        default="moin")
+    return parser
+
+
+formats = {
+    'moin': formatter.WikiFormatter,
+    'rest': formatter.ReSTFormatter,
+    }
+
+
 def main():
-    if len(sys.argv) != 2:
-        print usage()
-        sys.exit(2)
-    try:
-        module = string_to_module(sys.argv[1])
-    except:
-        print usage()
-        raise
-    format = formatter.ReSTFormatter(sys.stdout)
-    #format = formatter.WikiFormatter(sys.stdout)
+    parser = make_options()
+    (options, args) = parser.parse_args()
+    format = formats[options.format](sys.stdout)
     doc = documenter.Documenter(format)
+    module = string_to_module(args[0])
     finder.find_tests(doc, module)
 
 
