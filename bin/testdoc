@@ -36,7 +36,8 @@ def main():
     except:
         print usage()
         raise
-    format = formatter.WikiFormatter(sys.stdout)
+    format = formatter.ReSTFormatter(sys.stdout)
+    #format = formatter.WikiFormatter(sys.stdout)
     doc = documenter.Documenter(format)
     finder.find_tests(doc, module)
 

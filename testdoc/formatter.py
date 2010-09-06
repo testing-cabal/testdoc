@@ -28,3 +28,36 @@ class WikiFormatter(object):
 
     def paragraph(self, text):
         self.writeln('%s\n' % (text.strip(),))
+
+
+class ReSTFormatter(object):
+    """ReST formatter."""
+
+    def __init__(self, stream):
+        self.stream = stream
+
+    def writeln(self, line):
+        self.stream.write('%s\n' % (line,))
+
+    def title(self, name):
+        self.writeln('%s' % ('=' * len(name),))
+        self.writeln('%s' % (name,))
+        self.writeln('%s' % ('=' * len(name),))
+        self.writeln('')
+        self.writeln('.. contents::')
+        self.writeln('')
+        self.writeln('')
+
+    def section(self, name):
+        self.writeln('')
+        self.writeln('%s' % (name,))
+        self.writeln('%s' % ('=' * len(name),))
+        self.writeln('')
+
+    def subsection(self, name):
+        self.writeln('%s' % (name,))
+        self.writeln('%s' % ('-' * len(name),))
+        self.writeln('')
+
+    def paragraph(self, text):
+        self.writeln('%s\n' % (text.strip(),))
