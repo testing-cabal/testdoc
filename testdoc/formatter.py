@@ -65,10 +65,22 @@ class ReSTFormatter(object):
 
 class TrialLikeTreeFormatter(object):
 
+    _colours = {
+        "black": "30",
+        "red": "31",
+        "green": "32",
+        "bright green": "32;1",
+        "yellow": "33",
+        "bright yellow": "33;1",
+        "blue": "34",
+        "magenta": "35",
+        "cyan": "36",
+        "white": "37",
+        "bright white": "37;1",
+        }
+
     def __init__(self, stream):
         self.stream = stream
-        from twisted.trial import reporter
-        self._colorizer = reporter._AnsiColorizer(stream)
         self._last_indent = 0
 
     def write(self, line, indent, colour):
@@ -76,24 +88,33 @@ class TrialLikeTreeFormatter(object):
             indent = self._last_indent + 2
         else:
             self._last_indent = indent
+        line = ' ' * indent + line
         if colour is None:
-            self.stream.write(' ' * indent + line)
+            self.stream.write(line)
         else:
-            self._colorizer.write(' ' * indent + line, colour)
+            colour = self._colours[colour]
+            self.stream.write('\x1b[%sm%s\x1b[0m' % (colour, line))
 
     def title(self, name):
-        self.write(name + '\n', 0, 'green')
+        self.write(name + '\n', 0, 'bright green')
 
     def section(self, name):
-        self.write(name + '\n', 2, 'yellow')
+        self.write(name + '\n', 2, 'bright yellow')
 
     def subsection(self, name):
-        self.write(name + '\n', 4, 'white')
+        self.write(name + '\n', 4, 'bright white')
 
     def paragraph(self, text):
+        colour = None
+        if self._last_indent == 0:
+            # title
+            colour = 'green'
+        elif self._last_indent == 2:
+            # section
+            colour = 'yellow'
         for line in text.strip().splitlines(True):
-            self.write(line, None, None)
+            self.write(line, None, colour)
         if not line.endswith('\n'):
-            self.write('\n', None, None)
+            self.write('\n', None, colour)
 
 
