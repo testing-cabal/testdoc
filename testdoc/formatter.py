@@ -68,11 +68,7 @@ class TrialLikeTreeFormatter(object):
     def __init__(self, stream):
         self.stream = stream
         from twisted.trial import reporter
-        for colorizer in [reporter._Win32Colorizer, reporter._AnsiColorizer,
-                reporter._NullColorizer]:
-            if colorizer.supported(stream):
-                self._colorizer = colorizer(stream)
-                break
+        self._colorizer = reporter._AnsiColorizer(stream)
         self._last_indent = 0
 
     def write(self, line, indent, colour):
