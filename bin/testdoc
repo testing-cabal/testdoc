@@ -30,7 +30,7 @@ def string_to_module(argument):
 def make_options():
     from optparse import OptionParser
     parser = OptionParser(
-        usage="usage: %prog [options] <fully-qualified module name>")
+        usage="usage: %prog [options] MODULE_NAME [MODULE_NAME ...]")
     format_choices = sorted(formats.keys())
     parser.add_option("-f", "--format", dest="format",
         choices=format_choices, metavar="FORMAT",
@@ -51,8 +51,9 @@ def main():
     (options, args) = parser.parse_args()
     format = formats[options.format](sys.stdout)
     doc = documenter.Documenter(format)
-    module = string_to_module(args[0])
-    finder.find_tests(doc, module)
+    for arg in args:
+        module = string_to_module(arg)
+        finder.find_tests(doc, module)
 
 
 if __name__ == '__main__':
