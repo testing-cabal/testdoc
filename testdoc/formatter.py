@@ -87,26 +87,26 @@ class ShinyFormatter(object):
         self.stream = stream
         self._last_indent = 0
 
-    def write(self, line, indent, colour):
+    def writeln(self, line, indent, colour):
         if indent is None:
             indent = self._last_indent + 2
         else:
             self._last_indent = indent
         line = ' ' * indent + line
         if colour is None:
-            self.stream.write(line)
+            self.stream.write(line + '\n')
         else:
             colour = self._colours[colour]
-            self.stream.write('\x1b[%sm%s\x1b[0m' % (colour, line))
+            self.stream.write('\x1b[%sm%s\x1b[0m\n' % (colour, line))
 
     def title(self, name):
-        self.write(name + '\n', 0, 'bright green')
+        self.writeln(name, 0, 'bright green')
 
     def section(self, name):
-        self.write(name + '\n', 2, 'bright yellow')
+        self.writeln(name, 2, 'bright yellow')
 
     def subsection(self, name):
-        self.write(name + '\n', 4, 'bright white')
+        self.writeln(name, 4, 'bright white')
 
     def paragraph(self, text):
         colour = None
@@ -117,8 +117,4 @@ class ShinyFormatter(object):
             # section
             colour = 'yellow'
         for line in text.strip().splitlines(True):
-            self.write(line, None, colour)
-        if not line.endswith('\n'):
-            self.write('\n', None, colour)
-
-
+            self.writeln(line.rstrip('\n'), None, colour)
