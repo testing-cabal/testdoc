@@ -53,7 +53,14 @@ def main():
     doc = documenter.Documenter(format)
     for arg in args:
         module = string_to_module(arg)
-        finder.find_tests(doc, module)
+        try:
+            finder.find_tests(doc, module)
+        except IOError, e:
+            import errno
+            if e.errno == getattr(errno, 'EPIPE', None):
+                sys.stderr.write('testdoc: broken pipe\n')
+                return
+            raise
 
 
 if __name__ == '__main__':
