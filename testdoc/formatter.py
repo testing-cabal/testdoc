@@ -63,7 +63,11 @@ class ReSTFormatter(object):
         self.writeln('%s\n' % (text.strip(),))
 
 
-class TrialLikeTreeFormatter(object):
+class ShinyFormatter(object):
+    """Coloured, indented output.
+    
+    For use on terminals that support ANSI colour sequences.
+    """
 
     _colours = {
         "black": "30",
