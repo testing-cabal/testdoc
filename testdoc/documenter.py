@@ -19,14 +19,18 @@ def split_name(name):
 def gen_split_name(name,
                    wordRE=re.compile(
                        r'[0-9]+|[A-Z]?(?:(?:[A-Z](?![a-z]))+|[a-z]*)')):
+    underscores = ''
     for word in name.split('_'):
+        if word == '':
+            underscores += '_'
         for bit in wordRE.findall(word):
             if len(bit) == 0:
                 continue
             if len(bit) > 1 and bit.upper() == bit:
-                yield bit
+                yield underscores + bit
             else:
-                yield bit.lower()
+                yield underscores + bit.lower()
+            underscores = ''
 
 
 def title_case(words):
@@ -56,7 +60,7 @@ class Documenter(object):
         return module_name
 
     def format_test(self, test_name):
-        return title_case(split_name(test_name)[1:])
+        return title_case(split_name(test_name)[1:]).lstrip()
 
     def format_test_class(self, class_name):
         return title_case(
