@@ -1,3 +1,5 @@
+# Copyright (c) 2007-2010 testdoc authors. See LICENSE for details.
+
 import unittest
 
 from testdoc.documenter import Documenter, split_name, title_case

@@ -1,3 +1,5 @@
+# Copyright (c) 2007-2010 testdoc authors. See LICENSE for details.
+
 """Collection of reflection tools lifted from Twisted 2.5."""
 
 import imp

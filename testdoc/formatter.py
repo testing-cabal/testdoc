@@ -1,3 +1,5 @@
+# Copyright (c) 2007-2010 testdoc authors. See LICENSE for details.
+
 """Formatters for creating documents.
 
 A formatter is an object which accepts an output stream (usually a file or

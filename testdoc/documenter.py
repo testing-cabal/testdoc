@@ -1,3 +1,5 @@
+# Copyright (c) 2007-2010 testdoc authors. See LICENSE for details.
+
 import re
 
 from testdoc.reflect import extract_docs

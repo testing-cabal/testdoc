@@ -1,0 +1,10 @@
+The home page for development is at::
+  https://launchpad.net/testdoc
+
+You can always get the code using::
+  $ bzr branch lp:testdoc
+
+Run the tests with::
+  $ trial testdoc
+
+See LICENSE for details.
