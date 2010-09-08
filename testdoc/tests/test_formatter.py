@@ -15,7 +15,7 @@ class WikiFormatterTest(unittest.TestCase):
 
     def test_section(self):
         self.formatter.section('foo')
-        self.assertEqual(self.stream.getvalue(), '== foo ==\n\n')
+        self.assertEqual(self.stream.getvalue(), '\n== foo ==\n\n')
 
     def test_subsection(self):
         self.formatter.subsection('foo')
